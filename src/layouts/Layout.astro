@@ -1,0 +1,63 @@
+---
+import AdSlot from "../components/AdSlot.astro";
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const path = Astro.url.pathname;
+
+const navItems = [
+  { href: "/", label: "Dashboard" },
+  { href: "/jha/", label: "JHA Builder" },
+  { href: "/checklist/", label: "Checklist Generator" },
+  { href: "/toolbox-talks/", label: "Toolbox Talks" },
+];
+
+function isActive(href: string) {
+  if (href === "/") return path === "/";
+  return path.startsWith(href);
+}
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | SafetyDesk</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <meta property="og:title" content={`${title} | SafetyDesk`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="name">SafetyDesk</div>
+          <div class="tagline">Free field HSE toolkit</div>
+        </div>
+        <nav>
+          {navItems.map((item) => (
+            <a href={item.href} class={isActive(item.href) ? "active" : ""}>{item.label}</a>
+          ))}
+        </nav>
+      </aside>
+      <div class="main">
+        <div class="content">
+          <slot />
+        </div>
+        <aside class="rail">
+          <div class="rail-inner">
+            <AdSlot variant="rail" />
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

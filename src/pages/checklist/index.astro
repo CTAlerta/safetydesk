@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { checklistCategories } from "../../data/checklists";
+---
+<Layout
+  title="Inspection Checklists"
+  description="Free inspection checklists covering PPE, fire safety, housekeeping, electrical safety, scaffolds, ladders, and more."
+>
+  <div class="eyebrow">Inspection support</div>
+  <h1 class="section-title">Inspection Checklists</h1>
+  <p class="section-desc">
+    Pick a category to open a ready checklist you can walk the site with. Free to view,
+    check off, and download.
+  </p>
+
+  {checklistCategories.map((c) => (
+    <a class="list-link" href={`/checklist/${c.slug}/`}>
+      <span>{c.title}</span>
+      <span style="color: #8A8377; font-size: 12px;">{c.items.length} items →</span>
+    </a>
+  ))}
+</Layout>

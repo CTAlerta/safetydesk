@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { jhaTemplates } from "../../data/jha";
+---
+<Layout
+  title="Job Hazard Analysis (JHA) Templates"
+  description="Free Job Hazard Analysis templates for hot work, working at heights, confined space entry, LOTO, and more. Editable steps, hazards, and controls."
+>
+  <div class="eyebrow">Permit-to-work support</div>
+  <h1 class="section-title">Job Hazard Analysis Templates</h1>
+  <p class="section-desc">
+    Ready-to-use JHAs for common high-risk tasks. Each template lists the step, hazard,
+    control measure, and risk rating — free to view, copy, and adapt for your site.
+  </p>
+
+  {jhaTemplates.map((t) => (
+    <a class="list-link" href={`/jha/${t.slug}/`}>
+      <span>{t.title}</span>
+      <span style="color: #8A8377; font-size: 12px;">{t.steps.length} steps →</span>
+    </a>
+  ))}
+</Layout>

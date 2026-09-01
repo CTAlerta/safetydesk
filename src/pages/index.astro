@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { jhaTemplates } from "../data/jha";
+import { checklistCategories } from "../data/checklists";
+import { toolboxTalks } from "../data/toolboxTalks";
+---
+<Layout
+  title="Free HSE Toolkit for Field Supervisors and Contractors"
+  description="SafetyDesk is a free online toolkit for job hazard analyses, inspection checklists, and toolbox talks — built for field supervisors, HSE officers, and small contractors."
+>
+  <div class="eyebrow">Overview</div>
+  <h1 class="section-title">Good shift. Here's your toolkit.</h1>
+  <p class="section-desc">
+    Build job hazard analyses, generate inspection checklists, and pull toolbox talks —
+    free, no account required, no locked content.
+  </p>
+
+  <div class="grid-3" style="margin-bottom: 24px;">
+    <div class="stat">
+      <div class="num">{jhaTemplates.length}</div>
+      <div class="label">JHA templates</div>
+    </div>
+    <div class="stat">
+      <div class="num">{checklistCategories.length}</div>
+      <div class="label">Checklist categories</div>
+    </div>
+    <div class="stat">
+      <div class="num">{toolboxTalks.length}</div>
+      <div class="label">Toolbox talks</div>
+    </div>
+  </div>
+
+  <AdSlot variant="banner" />
+
+  <div class="grid-3" style="margin-top: 24px;">
+    <a class="tile" href="/jha/" style="background: #1E2530; color: #F7F5F0; border-color: #1E2530;">
+      <div class="tile-title" style="color: #F7F5F0;">Start a JHA</div>
+      <div class="tile-sub" style="color: #A6ACB8;">From a ready template</div>
+    </a>
+    <a class="tile" href="/checklist/">
+      <div class="tile-title">Generate a checklist</div>
+      <div class="tile-sub">{checklistCategories.length} categories ready</div>
+    </a>
+    <a class="tile" href="/toolbox-talks/">
+      <div class="tile-title">Read a toolbox talk</div>
+      <div class="tile-sub">{toolboxTalks.length} ready to use</div>
+    </a>
+  </div>
+</Layout>

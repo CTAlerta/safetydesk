@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { toolboxTalks } from "../../data/toolboxTalks";
+---
+<Layout
+  title="Toolbox Talks"
+  description="Free toolbox talk scripts for pre-shift safety briefings — heat stress, ladder safety, PPE, fatigue, and more."
+>
+  <div class="eyebrow">5-minute briefings</div>
+  <h1 class="section-title">Toolbox Talk Library</h1>
+  <p class="section-desc">
+    Short, ready-to-read talks for pre-shift briefings. All talks are free to read and download.
+  </p>
+
+  {toolboxTalks.map((t) => (
+    <a class="list-link" href={`/toolbox-talks/${t.slug}/`}>
+      <span>{t.title}</span>
+      <span style="color: #8A8377; font-size: 12px;">Read →</span>
+    </a>
+  ))}
+</Layout>

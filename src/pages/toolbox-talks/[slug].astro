@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { toolboxTalks } from "../../data/toolboxTalks";
+
+export function getStaticPaths() {
+  return toolboxTalks.map((t) => ({
+    params: { slug: t.slug },
+    props: { talk: t },
+  }));
+}
+
+const { talk } = Astro.props;
+---
+<Layout title={talk.title} description={talk.metaDescription}>
+  <div class="eyebrow">Toolbox talk</div>
+  <div class="talk-body">
+    <h1>{talk.title}</h1>
+    <p>{talk.body}</p>
+  </div>
+
+  <div style="margin: 20px 0;">
+    <button class="btn btn-primary" id="download-btn">Download as text</button>
+  </div>
+
+  <AdSlot variant="banner" />
+
+  <script define:vars={{ title: talk.title, body: talk.body }}>
+    document.getElementById("download-btn")?.addEventListener("click", () => {
+      const content = `TOOLBOX TALK: ${title}\nGenerated via SafetyDesk\n\n${body}`;
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${title.replace(/\s+/g, "_")}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</Layout>

@@ -1,0 +1,15 @@
+---
+export interface Props {
+  variant?: "banner" | "rail";
+}
+const { variant = "banner" } = Astro.props;
+---
+<!--
+  AD SLOT PLACEHOLDER
+  Replace this div with your ad network's tag (e.g. Google AdSense <ins> unit)
+  once your site is approved. Keeping it as a labeled placeholder until then
+  avoids blank layout shift and keeps the zone reserved.
+-->
+<div class={`adslot ${variant === "rail" ? "rail" : ""}`}>
+  Advertisement space
+</div>

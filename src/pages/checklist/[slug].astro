@@ -1,0 +1,64 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { checklistCategories } from "../../data/checklists";
+
+export function getStaticPaths() {
+  return checklistCategories.map((c) => ({
+    params: { slug: c.slug },
+    props: { category: c },
+  }));
+}
+
+const { category } = Astro.props;
+---
+<Layout title={category.title} description={category.metaDescription}>
+  <div class="eyebrow">Inspection checklist</div>
+  <h1 class="section-title">{category.title}</h1>
+  <p class="section-desc">Check items off as you walk the site, then download your results.</p>
+
+  <div class="checklist" id="checklist">
+    {category.items.map((item, i) => (
+      <label>
+        <input type="checkbox" data-item={item} />
+        <span>{item}</span>
+      </label>
+    ))}
+  </div>
+
+  <div style="margin: 20px 0;">
+    <button class="btn btn-primary" id="download-btn">Download as text</button>
+  </div>
+
+  <AdSlot variant="banner" />
+
+  <script define:vars={{ title: category.title }}>
+    const list = document.getElementById("checklist");
+    list?.addEventListener("change", (e) => {
+      const target = e.target;
+      if (target && target.matches('input[type="checkbox"]')) {
+        const span = target.parentElement?.querySelector("span");
+        span?.classList.toggle("done", target.checked);
+      }
+    });
+
+    document.getElementById("download-btn")?.addEventListener("click", () => {
+      const boxes = Array.from(list?.querySelectorAll('input[type="checkbox"]') || []);
+      const lines = [
+        `INSPECTION CHECKLIST: ${title}`,
+        `Generated via SafetyDesk`,
+        "",
+        ...boxes.map(
+          (b, i) => `${i + 1}. [${b.checked ? "x" : " "}] ${b.dataset.item}`
+        ),
+      ];
+      const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${title.replace(/\s+/g, "_")}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</Layout>

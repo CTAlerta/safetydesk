@@ -1,0 +1,64 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { jhaTemplates } from "../../data/jha";
+
+export function getStaticPaths() {
+  return jhaTemplates.map((t) => ({
+    params: { slug: t.slug },
+    props: { template: t },
+  }));
+}
+
+const { template } = Astro.props;
+---
+<Layout title={template.title} description={template.metaDescription}>
+  <div class="eyebrow">Job Hazard Analysis</div>
+  <h1 class="section-title">{template.title}</h1>
+  <p class="section-desc">
+    Review and adapt this JHA to match your actual site conditions before use.
+    Download it as a text file to attach to your permit.
+  </p>
+
+  {template.steps.map((row, i) => (
+    <div class="jha-row">
+      <div class="jha-num">{i + 1}</div>
+      <div class="jha-body">
+        <div class="label">Step</div>
+        <div class="val">{row.step}</div>
+        <div class="label">Hazard</div>
+        <div class="val">{row.hazard}</div>
+        <div class="label">Control</div>
+        <div class="val">{row.control}</div>
+      </div>
+      <span class={`risk-tag risk-${row.risk}`}>{row.risk}</span>
+    </div>
+  ))}
+
+  <div style="margin: 20px 0;">
+    <button class="btn btn-primary" id="download-btn">Download as text</button>
+  </div>
+
+  <AdSlot variant="banner" />
+
+  <script define:vars={{ title: template.title, steps: template.steps }}>
+    document.getElementById("download-btn")?.addEventListener("click", () => {
+      const lines = [
+        `JOB HAZARD ANALYSIS: ${title}`,
+        `Generated via SafetyDesk`,
+        "",
+        ...steps.map(
+          (r, i) =>
+            `${i + 1}. STEP: ${r.step}\n   HAZARD: ${r.hazard}\n   CONTROL: ${r.control}\n   RISK: ${r.risk}\n`
+        ),
+      ];
+      const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${title.replace(/\s+/g, "_")}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</Layout>
