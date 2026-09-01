@@ -6,6 +6,6 @@ import sitemap from '@astrojs/sitemap';
 // (e.g. https://safetydesk.vercel.app or your own domain once you buy one).
 // This is required for the sitemap and canonical URLs to be correct.
 export default defineConfig({
-  site: 'https://safetydesk.example.com',
+  site: 'https://safetydesk.netlify.app',
   integrations: [sitemap()],
 });
